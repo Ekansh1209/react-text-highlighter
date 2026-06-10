@@ -27,5 +27,5 @@ npm run dev
 
 ## Live Demo
 
-https://Ekansh1209.github.io/react-text-highlighter
+https://ekansh1209.github.io/react-text-highlighter/
 
