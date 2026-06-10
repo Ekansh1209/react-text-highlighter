@@ -33,13 +33,7 @@ function getTextOffset(root, targetNode, targetOffset) {
   return offset;
 }
 
-// ─── STEP 5: Overlap resolver ─────────────────────────────────────────────────
-// Given existing highlights and a new { start, end, color },
-// returns a new highlights array with overlaps resolved:
-//   - exact same range   → recolor (replace)
-//   - partial overlap    → trim existing, insert new
-//   - full containment   → split existing around new
-//   - no overlap         → just append
+// ───  Overlap resolver ─────────────────────────────────────────────────
 function resolveOverlaps(existing, newHL) {
   const { start, end } = newHL;
 
@@ -66,7 +60,7 @@ function mergeAdjacent(highlights) {
   return merged;
 }
 
-// ─── STEP 6: Build segments for one paragraph ─────────────────────────────────
+// ─── Build segments for one paragraph ─────────────────────────────────
 // paraStart = absolute offset where this paragraph begins in FULL_TEXT
 // Returns [{ text, highlight: null | highlightObj }]
 function buildSegments(paraText, paraStart, highlights) {
@@ -179,9 +173,6 @@ export default function TextHighlighter() {
 
       const end = getTextOffset(container, range.endContainer, range.endOffset);
 
-      console.log("Selected:", selection.toString());
-      console.log("Slice:", FULL_TEXT.slice(start, end));
-
       if (start >= end || FULL_TEXT.slice(start, end).trim() === "") {
         selection.removeAllRanges();
         return;
@@ -200,7 +191,7 @@ export default function TextHighlighter() {
     [isHighlightMode],
   );
 
-  // ─── STEP 8: Remove on double-click ──────────────────────────────────────────
+  // ──── Remove on double-click ──────────────────────────────────────────
   const handleDoubleClick = useCallback(
     (e) => {
       const mark =
@@ -232,7 +223,7 @@ export default function TextHighlighter() {
     } catch {}
   }, []);
 
-  // ─── STEP 7: Render a paragraph with inline <mark> tags ─────────────────────
+  // ───Render a paragraph with inline <mark> tags ─────────────────────
   const renderParagraph = (paraText, paraIndex) => {
     const paraStart = PARA_OFFSETS[paraIndex];
     const segments = buildSegments(paraText, paraStart, highlights);
